@@ -1,10 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Reflection;
-using System.Text;
+using System.Linq;
 
 namespace Cottontail.Data
 {
@@ -13,30 +9,6 @@ namespace Cottontail.Data
     /// </summary>
     public static class TypeUtility
     {
-
-        //Enum stuff, allows for the use of the descriptuions attribute for descriptive string value conversion
-        public static string ToDescription<TEnum>(this TEnum EnumValue) where TEnum : struct
-        {
-            return GetEnumDescription((Enum)(object)(EnumValue));
-        }
-
-        public static string GetEnumDescription(Enum value)
-        {
-            FieldInfo fi = value.GetType().GetField(value.ToString());
-
-            DescriptionAttribute[] attributes =
-                (DescriptionAttribute[])fi.GetCustomAttributes(
-                typeof(DescriptionAttribute),
-                false);
-
-            if (attributes != null &&
-                attributes.Length > 0)
-                return attributes[0].Description;
-            else
-                return value.ToString();
-        }
-
-        #region "Raw Type Conversion"
         /// <summary>
         /// Fault safe type conversion with output reference and verification (like value type TryConvert)
         /// </summary>
@@ -107,50 +79,16 @@ namespace Cottontail.Data
 
             return newThing;
         }
-        #endregion
 
-        public static string SerializeToJson(object thing)
+        /// <summary>
+        /// Gets all system types and interfaces implemented by or with for a type, including itself
+        /// </summary>
+        /// <param name="t">the system type in question</param>
+        /// <returns>all types that touch the input type</returns>
+        public static IEnumerable<Type> GetAllImplimentingedTypes(Type t)
         {
-            var serializer = GetSerializer();
-
-            var sb = new StringBuilder();
-            var writer = new StringWriter(sb);
-
-            serializer.Serialize(writer, thing);
-
-            return sb.ToString();
-        }
-
-        public static int GenerateHashKey(List<object> parameters)
-        {
-            return GenerateHashKey(parameters.ToArray());
-        }
-
-        public static int GenerateHashKey(object[] parameters)
-        {
-            unchecked // Overflow is fine, just wrap
-            {
-                int hash = 17;
-
-                foreach (object param in parameters)
-                {
-                    var stringCode = param == null ? 0 : param.GetHashCode();
-
-                    hash = hash * 23 + stringCode;
-                }
-
-                return hash;
-            }
-        }
-
-
-        private static JsonSerializer GetSerializer()
-        {
-            var serializer = JsonSerializer.Create();
-
-            serializer.TypeNameHandling = TypeNameHandling.Auto;
-
-            return serializer;
+            var implimentedTypes = t.Assembly.GetTypes().Where(ty => ty.GetInterfaces().Contains(t) || ty == t);
+            return implimentedTypes.Concat(t.GetInterfaces());
         }
     }
 }
