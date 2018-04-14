@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace Cottontail.Data
+namespace Logg.Data
 {
     public static class EnumUtility
     {

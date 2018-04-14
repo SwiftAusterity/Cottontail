@@ -1,10 +1,10 @@
-﻿using Cottontail.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
+using Utility;
 
-namespace Cottontail.Mock
+namespace Logg.Mock
 {
     /// <summary>
     /// A mock object
@@ -96,7 +96,7 @@ namespace Cottontail.Mock
             if (conditions.Any())
             {
                 Conditions = Conditions.Union(conditions).ToList();
-                paramterizedMethodName = string.Format("{0}_{1}", methodName, TypeUtility.GenerateHashKey(conditions.ToArray()));
+                paramterizedMethodName = string.Format("{0}_{1}", methodName, Serialization.GenerateHashKey(conditions.ToArray()));
             }
 
             UpsertMethod(paramterizedMethodName, returnValue, outParams);
@@ -149,7 +149,7 @@ namespace Cottontail.Mock
                     if (metConditions.Equals(Conditions.Count(cond => cond.Item1.Equals(methodKeyName))))
                     {
                         //We have a match
-                        methodKeyName = string.Format("{0}_{1}", binder.Name, TypeUtility.GenerateHashKey(Conditions.Where(cond => cond.Item1.Equals(methodKeyName)).ToArray()));
+                        methodKeyName = string.Format("{0}_{1}", binder.Name, Serialization.GenerateHashKey(Conditions.Where(cond => cond.Item1.Equals(methodKeyName)).ToArray()));
                     }
                 }
             }

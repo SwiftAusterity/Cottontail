@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Cottontail.Mock
+namespace Logg.Mock
 {
     public static class Mocker
     {

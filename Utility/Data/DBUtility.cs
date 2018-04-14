@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace Cottontail.Data
+namespace Utility
 {
     public static class DBUtility
     {

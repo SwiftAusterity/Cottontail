@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cottontail.Data
+namespace Utility
 {
     /// <summary>
     /// Type conversion utilities and extensions

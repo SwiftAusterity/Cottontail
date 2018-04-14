@@ -1,4 +1,4 @@
-﻿namespace Cottontail.Data
+﻿namespace Utility
 {
     public static class StringUtility
     {

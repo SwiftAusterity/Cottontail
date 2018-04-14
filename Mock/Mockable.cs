@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Cottontail.Mock
+namespace Logg.Mock
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class Mockable : Attribute
